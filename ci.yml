@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run tests
+        run: pytest tests/ -v
+
+      - name: Validate dataset (every curated SMILES parses)
+        run: |
+          python -c "
+          import csv
+          from ringstrain.features import featurize_smiles
+          for path in ['ringstrain/data/strain_energies.csv', 'ringstrain/data/pharma_scaffolds.csv']:
+              with open(path, newline='') as f:
+                  rows = list(csv.DictReader(f))
+              for r in rows:
+                  featurize_smiles(r['smiles'])
+              print(f'{path}: {len(rows)} rows validated OK')
+          "
+
+      - name: Train model (smoke test)
+        run: python -m ringstrain.model
+
+      - name: CLI smoke test
+        run: python -m ringstrain.predict "C1CC1" "C1CO1" "C1C2CC1C2" --json

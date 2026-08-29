@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strain Bench — Ring Strain Energy Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12161c;
+    --panel:#171d25;
+    --panel-2:#1c232c;
+    --border:#262e38;
+    --text:#E8ECEF;
+    --muted:#8B96A3;
+    --amber:#E8B23D;
+    --teal:#4FA98C;
+    --red:#D9776B;
+    --grid:#1e2530;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/100% 28px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/28px 100%,
+      var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+  }
+  header{
+    padding:36px 32px 20px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .title-block h1{
+    font-family:'Spectral', serif;
+    font-weight:600;
+    font-size:32px;
+    margin:0;
+    letter-spacing:0.2px;
+  }
+  .title-block h1 .ring{
+    color:var(--amber);
+    font-style:italic;
+    font-weight:500;
+  }
+  .title-block p{
+    margin:6px 0 0;
+    color:var(--muted);
+    font-size:14px;
+    max-width:560px;
+  }
+  .badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    border:1px solid var(--border);
+    background:var(--panel);
+    padding:6px 10px;
+    border-radius:3px;
+    letter-spacing:0.5px;
+  }
+  .badge b{color:var(--teal);}
+  main{
+    max-width:1180px;
+    margin:0 auto;
+    padding:32px;
+    display:grid;
+    grid-template-columns:1fr 1.15fr;
+    gap:24px;
+  }
+  @media (max-width: 880px){
+    main{grid-template-columns:1fr;}
+  }
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:22px;
+  }
+  .panel h2{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:1.4px;
+    color:var(--muted);
+    margin:0 0 16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .panel h2::before{
+    content:'';
+    width:6px;height:6px;border-radius:50%;
+    background:var(--teal);
+    display:inline-block;
+  }
+  #smiles-input{
+    width:100%;
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:4px;
+    color:var(--text);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:16px;
+    padding:12px 14px;
+    outline:none;
+  }
+  #smiles-input:focus{border-color:var(--amber);}
+  .row{display:flex; gap:10px; margin-top:12px;}
+  button{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    border:none;
+    border-radius:4px;
+    padding:11px 20px;
+    cursor:pointer;
+    background:var(--amber);
+    color:#1a1305;
+    transition:filter .15s ease;
+  }
+  button:hover{filter:brightness(1.08);}
+  button.ghost{
+    background:transparent;
+    border:1px solid var(--border);
+    color:var(--text);
+  }
+  .chip-section{margin-top:22px;}
+  .chip-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-bottom:10px;
+  }
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    padding:6px 10px;
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:14px;
+    color:var(--text);
+    cursor:pointer;
+  }
+  .chip:hover{border-color:var(--amber); color:var(--amber);}
+  .chip.hetero{color:var(--teal);}
+  .chip.hetero:hover{border-color:var(--teal); color:var(--teal);}
+  .chip.forefront{color:#C97BD8; border-color:#3a2b40;}
+  .chip.forefront:hover{border-color:#C97BD8; color:#C97BD8;}
+  .chip.pharma{color:#7BA8D8; border-color:#233247;}
+  .chip.pharma:hover{border-color:#7BA8D8; color:#7BA8D8;}
+
+  /* Gauge */
+  #gauge-wrap{display:flex; flex-direction:column; align-items:center; padding:6px 0 4px;}
+  #readout{
+    font-family:'Spectral', serif;
+    font-size:44px;
+    font-weight:600;
+    margin-top:2px;
+  }
+  #readout .unit{font-size:16px; color:var(--muted); font-weight:400; margin-left:6px;}
+  #readout-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .needle{transition:transform 0.9s cubic-bezier(.2,.9,.25,1);}
+  .tick-label{font-family:'IBM Plex Mono', monospace; font-size:9px; fill:var(--muted);}
+
+  #detail-grid{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .detail-cell{
+    background:var(--panel-2);
+    padding:12px 14px;
+  }
+  .detail-cell .k{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.8px;
+    color:var(--muted);
+    display:block;
+    margin-bottom:4px;
+  }
+  .detail-cell .v{font-size:14px;}
+  .flags{margin-top:14px;}
+  .flag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--red);
+    background:rgba(217,119,107,0.08);
+    border:1px solid rgba(217,119,107,0.35);
+    border-radius:4px;
+    padding:8px 12px;
+    margin-top:8px;
+  }
+  #empty-state{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+    padding:20px 4px;
+  }
+  footer{
+    max-width:1180px;
+    margin:0 auto;
+    padding:8px 32px 40px;
+    color:var(--muted);
+    font-size:12px;
+    font-family:'IBM Plex Mono', monospace;
+    line-height:1.7;
+  }
+  footer a{color:var(--teal);}  section.panel.wide{grid-column:1 / -1;}
+  .scheme-bars{display:flex; align-items:flex-end; gap:14px; height:160px; padding:10px 4px 0; margin-top:8px;}
+  .scheme-bar-col{display:flex; flex-direction:column; align-items:center; flex:1; height:100%; justify-content:flex-end;}
+  .scheme-bar{width:100%; max-width:56px; border-radius:3px 3px 0 0; background:linear-gradient(180deg, var(--amber), #c98f2a); position:relative; transition:height .6s cubic-bezier(.2,.9,.25,1);}
+  .scheme-bar.negative{background:linear-gradient(180deg, #6b7280, #4b5563);}
+  .scheme-bar-val{font-family:'IBM Plex Mono', monospace; font-size:12px; margin-bottom:4px; color:var(--text);}
+  .scheme-bar-label{font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--muted); margin-top:8px; text-align:center; line-height:1.3;}
+  .scheme-zero-line{border-top:1px dashed var(--border);}
+  .reaction-eq{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:10px 12px;
+    margin-top:8px;
+    color:var(--text);
+  }
+  .reaction-eq .lvl{color:var(--amber); font-weight:600;}
+  .reaction-note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:10px;
+    line-height:1.6;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title-block">
+    <h1>Strain <span class="ring">Bench</span></h1>
+    <p>An ML platform for estimating ring strain energy of carbocycles and heterocycles from a SMILES string — trained on a curated seed set, evaluated by leave-one-out cross-validation.</p>
+  </div>
+  <div class="badge" id="model-badge">loading model info…</div>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>Input</h2>
+    <input id="smiles-input" type="text" placeholder="Enter a ring SMILES, e.g. C1CC1" value="C1CC1" autocomplete="off" spellcheck="false">
+    <div class="row">
+      <button id="predict-btn">Measure strain</button>
+      <button class="ghost" id="clear-btn">Clear</button>
+    </div>
+
+    <div class="chip-section">
+      <div class="chip-label">Pharma scaffolds</div>
+      <div class="chips" id="chips-pharma"></div>
+    </div>
+    <div class="chip-section">
+      <div class="chip-label">Forefront / recent systems</div>
+      <div class="chips" id="chips-forefront"></div>
+    </div>
+    <div class="chip-section">
+      <div class="chip-label">Carbocycles</div>
+      <div class="chips" id="chips-carbo"></div>
+    </div>
+    <div class="chip-section">
+      <div class="chip-label">Heterocycles</div>
+      <div class="chips" id="chips-hetero"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Gauge reading</h2>
+    <div id="results-body">
+      <div id="empty-state">
+        Enter a SMILES string on the left, or click one of the reference rings, then press <b style="color:var(--text)">Measure strain</b>.
+      </div>
+    </div>
+  </section>
+</main>
+
+<main style="grid-template-columns:1fr; margin-top:0;">
+  <section class="panel wide" id="schemes-panel" style="display:none;">
+    <h2>Reaction-scheme hierarchy (isodesmic → homodesmotic → hyperhomodesmotic → …)</h2>
+    <div id="schemes-body"></div>
+  </section>
+</main>
+
+<footer>
+  local platform · POST /api/predict {smiles} → strain estimate · seed dataset + physics-informed features, see README for methodology and limitations ·
+  <a href="https://github.com" target="_blank" rel="noopener">not a substitute for DFT/experimental values</a>
+</footer>
+
+<script>
+const GAUGE_MAX = 70; // kcal/mol, gauge full-scale
+
+function gaugeSVG(){
+  // semi-circle gauge, 0..GAUGE_MAX, colored zones
+  const cx = 150, cy = 150, r = 120;
+  const startAngle = 180, endAngle = 0; // degrees, sweeping left(180)->right(0) over top
+  function pt(angleDeg, radius){
+    const a = angleDeg * Math.PI/180;
+    return [cx + radius*Math.cos(a), cy - radius*Math.sin(a)];
+  }
+  function arcPath(a0,a1,radius){
+    const [x0,y0] = pt(a0,radius);
+    const [x1,y1] = pt(a1,radius);
+    const large = Math.abs(a0-a1) > 180 ? 1 : 0;
+    return `M ${x0} ${y0} A ${radius} ${radius} 0 ${large} 0 ${x1} ${y1}`;
+  }
+  // zone boundaries in kcal/mol -> angle
+  const val2angle = v => 180 - (Math.min(v,GAUGE_MAX)/GAUGE_MAX)*180;
+  const zones = [
+    {from:0, to:10, color:'var(--teal)'},
+    {from:10, to:30, color:'var(--amber)'},
+    {from:30, to:GAUGE_MAX, color:'var(--red)'},
+  ];
+  let zoneArcs = zones.map(z =>
+    `<path d="${arcPath(val2angle(z.from), val2angle(z.to), r)}" stroke="${z.color}" stroke-width="14" fill="none" stroke-linecap="butt" opacity="0.85"/>`
+  ).join('');
+
+  let ticks = '';
+  for(let v=0; v<=GAUGE_MAX; v+=10){
+    const a = val2angle(v);
+    const [x1,y1] = pt(a, r-16);
+    const [x2,y2] = pt(a, r+2);
+    const [lx,ly] = pt(a, r-32);
+    ticks += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--border)" stroke-width="2"/>`;
+    ticks += `<text x="${lx}" y="${ly}" text-anchor="middle" class="tick-label">${v}</text>`;
+  }
+
+  return {cx, cy, r, val2angle, svgHead: `
+    <svg viewBox="0 0 300 175" width="300" height="175">
+      ${zoneArcs}
+      ${ticks}
+      <line id="needle" class="needle" x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy-r+20}" stroke="var(--text)" stroke-width="3" stroke-linecap="round" transform="rotate(90 ${cx} ${cy})"/>
+      <circle cx="${cx}" cy="${cy}" r="6" fill="var(--text)"/>
+    </svg>`};
+}
+
+function setNeedle(value){
+  const g = gaugeSVG();
+  const angle = g.val2angle(value); // 180(min)..0(max), where 90 is "up"
+  const rotation = angle - 90; // convert to rotate-from-vertical
+  const needle = document.getElementById('needle');
+  if(needle) needle.setAttribute('transform', `rotate(${rotation} ${g.cx} ${g.cy})`);
+}
+
+const FOREFRONT_NAMES = new Set([
+  'cyclopentyne','cyclohexyne','cycloheptyne','cyclooctyne',
+  '3-3-difluorocyclooctyne','bicyclopentane','silacyclobutane','phosphetane'
+]);
+
+async function loadExamples(){
+  const res = await fetch('/api/examples');
+  const rows = await res.json();
+  const forefront = rows.filter(r => FOREFRONT_NAMES.has(r.name));
+  const carbo = rows.filter(r => r.ring_class === 'carbocycle' && !FOREFRONT_NAMES.has(r.name));
+  const hetero = rows.filter(r => r.ring_class === 'heterocycle' && !FOREFRONT_NAMES.has(r.name));
+  const mk = (r, cls) => {
+    const el = document.createElement('div');
+    el.className = 'chip' + (cls ? ' '+cls : '');
+    el.textContent = r.name;
+    const conf = r.confidence ? `, confidence: ${r.confidence}` : '';
+    el.title = r.smiles + '  (' + r.known_strain + ' kcal/mol reported' + conf + ')';
+    el.onclick = () => { document.getElementById('smiles-input').value = r.smiles; runPredict(); };
+    return el;
+  };
+  const fContainer = document.getElementById('chips-forefront');
+  const cContainer = document.getElementById('chips-carbo');
+  const hContainer = document.getElementById('chips-hetero');
+  forefront.forEach(r => fContainer.appendChild(mk(r, 'forefront')));
+  carbo.forEach(r => cContainer.appendChild(mk(r)));
+  hetero.forEach(r => hContainer.appendChild(mk(r, 'hetero')));
+}
+
+async function loadModelInfo(){
+  const res = await fetch('/api/model_info');
+  const info = await res.json();
+  document.getElementById('model-badge').innerHTML =
+    `model <b>${info.model_name}</b> &nbsp;·&nbsp; n=${info.n_train} rings &nbsp;·&nbsp; LOO-MAE ${info.cv_results[info.model_name].loo_mae.toFixed(2)} kcal/mol`;
+}
+
+function renderResult(r){
+  const body = document.getElementById('results-body');
+  if(r.error){
+    body.innerHTML = `<div class="flag">Could not parse this SMILES: ${r.error}</div>`;
+    return;
+  }
+  const g = gaugeSVG();
+  let flags = '';
+  if(r.extrapolating_beyond_training_ring_sizes){
+    flags += `<div class="flag">Ring size ${r.primary_ring_size} is outside the training range — treat as extrapolation.</div>`;
+  }
+  if(r.novel_elements_not_in_training_data && r.novel_elements_not_in_training_data.length){
+    flags += `<div class="flag">Ring contains element(s) ${r.novel_elements_not_in_training_data.join(', ')} not seen in training data — genuine extrapolation onto new chemistry.</div>`;
+  }
+  if(r.polycyclic){
+    flags += `<div class="flag">Polycyclic input: uses whole-molecule ring-count and summed strain-proxy features, but is still an approximation for fused/bridged/cage systems.</div>`;
+  }
+  if(r.has_triple_bond_in_ring){
+    flags += `<div class="flag" style="color:var(--teal); border-color:rgba(79,169,140,0.35); background:rgba(79,169,140,0.08);">Ring alkyne detected (sp-hybridized ring atom) — cyclic-alkyne strain regime, as in click-chemistry cyclooctynes.</div>`;
+  }
+
+  body.innerHTML = `
+    <div id="gauge-wrap">
+      ${g.svgHead}
+      <div id="readout">${r.predicted_strain_kcal_mol.toFixed(2)}<span class="unit">kcal/mol</span></div>
+      <div id="readout-sub">${r.predicted_strain_kJ_mol.toFixed(1)} kJ/mol &nbsp;·&nbsp; ${r.ring_class}, ${r.primary_ring_size}-membered ring</div>
+    </div>
+    <div id="detail-grid">
+      <div class="detail-cell"><span class="k">Heteroatoms in ring</span><span class="v">${r.heteroatoms_in_ring.length ? r.heteroatoms_in_ring.join(', ') : '— none —'}</span></div>
+      <div class="detail-cell"><span class="k">Ring unsaturation</span><span class="v">${r.unsaturated_in_ring ? 'yes (sp2 in ring)' : 'no'}</span></div>
+      <div class="detail-cell"><span class="k">Baeyer angle-strain proxy</span><span class="v">${r.baeyer_angle_strain_proxy}</span></div>
+      <div class="detail-cell"><span class="k">Pitzer torsional proxy</span><span class="v">${r.pitzer_torsional_strain_proxy}</span></div>
+      <div class="detail-cell"><span class="k">Rings in molecule</span><span class="v">${r.n_rings_in_molecule}${r.polycyclic ? ' (summed proxy: '+r.sum_baeyer_proxy_all_rings+')' : ''}</span></div>
+      <div class="detail-cell"><span class="k">Model</span><span class="v">${r.model_used} (n=${r.n_training_examples})</span></div>
+    </div>
+    <div class="flags">${flags}</div>
+  `;
+  requestAnimationFrame(() => setNeedle(r.predicted_strain_kcal_mol));
+}
+
+async function runPredict(){
+  const smiles = document.getElementById('smiles-input').value.trim();
+  if(!smiles) return;
+  const res = await fetch('/api/predict', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({smiles})
+  });
+  const data = await res.json();
+  renderResult(data);
+  loadReactionSchemes(smiles);
+}
+
+async function loadReactionSchemes(smiles){
+  const panel = document.getElementById('schemes-panel');
+  const body = document.getElementById('schemes-body');
+  const res = await fetch('/api/reaction_schemes', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({smiles, max_level: 4})
+  });
+  const r = await res.json();
+
+  if(!r.supported){
+    panel.style.display = 'block';
+    body.innerHTML = `<div class="reaction-note">${r.reason}<br><br>This hierarchy comparison currently only runs the real numbers for simple unsubstituted cycloalkanes (cyclopropane .. cyclodecane) — try one of the plain carbocycle chips above (e.g. cyclopropane, cyclobutane, cyclohexane, cyclooctane).</div>`;
+    return;
+  }
+  panel.style.display = 'block';
+
+  const computed = r.computed_strain_by_level;
+  let barsHtml = '';
+  if(computed.length){
+    const vals = computed.map(c => c.strain_kcal_mol);
+    const maxAbs = Math.max(...vals.map(v => Math.abs(v)), 1);
+    barsHtml = '<div class="scheme-bars">' + computed.map(c => {
+      const h = Math.max(4, Math.abs(c.strain_kcal_mol) / maxAbs * 130);
+      const neg = c.strain_kcal_mol < 0 ? ' negative' : '';
+      return `<div class="scheme-bar-col">
+        <div class="scheme-bar-val">${c.strain_kcal_mol.toFixed(1)}</div>
+        <div class="scheme-bar${neg}" style="height:${h}px"></div>
+        <div class="scheme-bar-label">${c.scheme_name}<br>(${c.reactant_alkane}→${c.product_alkane})</div>
+      </div>`;
+    }).join('') + '</div>';
+  }
+
+  const eqHtml = r.reactions.map(rx => `
+    <div class="reaction-eq"><span class="lvl">[${rx.scheme_name}]</span> &nbsp;${rx.equation_text}<br>
+    <span style="color:var(--muted)">${rx.conserves}</span></div>
+  `).join('');
+
+  const dataNote = r.has_thermochemical_data
+    ? `<div class="reaction-note">Computed from real experimental gas-phase ΔfH° values (ring: ${r.dhf_ring_kcal_mol} kcal/mol; see README for the reference table and formula) — not model output. Notice how the isodesmic (methane-referenced) estimate can be far off, while homodesmotic/hyperhomodesmotic converge toward the accepted value as each level conserves more of the ring carbon's local bonding environment.</div>`
+    : `<div class="reaction-note">${r.note || ''}</div>`;
+
+  body.innerHTML = barsHtml + dataNote + '<div style="margin-top:14px;">' + eqHtml + '</div>';
+}
+
+document.getElementById('predict-btn').onclick = runPredict;
+document.getElementById('clear-btn').onclick = () => {
+  document.getElementById('smiles-input').value = '';
+  document.getElementById('results-body').innerHTML = `<div id="empty-state">Enter a SMILES string on the left, or click one of the reference rings, then press <b style="color:var(--text)">Measure strain</b>.</div>`;
+  document.getElementById('schemes-panel').style.display = 'none';
+};
+document.getElementById('smiles-input').addEventListener('keydown', e => { if(e.key === 'Enter') runPredict(); });
+
+loadExamples();
+loadModelInfo();
+loadPharmaScaffolds();
+runPredict();
+
+async function loadPharmaScaffolds(){
+  const res = await fetch('/api/pharma_scaffolds');
+  const rows = await res.json();
+  const container = document.getElementById('chips-pharma');
+  rows.forEach(r => {
+    const el = document.createElement('div');
+    el.className = 'chip pharma';
+    el.textContent = r.name;
+    el.title = `${r.smiles}  —  ${r.scaffold_role}\nSeen in: ${r.drug_examples}\n${r.note}\n(ML estimate — no tabulated experimental value)`;
+    el.onclick = () => { document.getElementById('smiles-input').value = r.smiles; runPredict(); };
+    container.appendChild(el);
+  });
+}
+</script>
+
+</body>
+</html>

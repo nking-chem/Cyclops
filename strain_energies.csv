@@ -1,0 +1,52 @@
+name,smiles,ring_class,strain_kcal_mol,confidence,source_note
+cyclopropane,C1CC1,carbocycle,27.6,high,heat-of-combustion group increment (textbook consensus)
+cyclobutane,C1CCC1,carbocycle,26.3,high,heat-of-combustion group increment (textbook consensus)
+cyclopentane,C1CCCC1,carbocycle,6.5,high,heat-of-combustion group increment (textbook consensus)
+cyclohexane,C1CCCCC1,carbocycle,0.1,high,reference (near strain-free) baseline
+cycloheptane,C1CCCCCC1,carbocycle,6.2,medium,heat-of-combustion group increment
+cyclooctane,C1CCCCCCC1,carbocycle,9.7,medium,heat-of-combustion group increment
+cyclononane,C1CCCCCCCC1,carbocycle,12.6,medium,heat-of-combustion group increment
+cyclodecane,C1CCCCCCCCC1,carbocycle,12.4,medium,heat-of-combustion group increment
+cycloundecane,C1CCCCCCCCCC1,carbocycle,11.1,low,heat-of-combustion group increment (transannular effects, less certain)
+cyclododecane,C1CCCCCCCCCCC1,carbocycle,1.5,low,heat-of-combustion group increment (transannular effects, less certain)
+cyclopropene,C1=CC1,carbocycle,54.5,medium,combined angle + sp2 ring strain
+cyclobutene,C1=CCC1,carbocycle,29.8,medium,combined angle + sp2 ring strain
+cyclopentene,C1=CCCC1,carbocycle,6.8,low,estimated relative to cyclopentane
+cyclohexene,C1=CCCCC1,carbocycle,2.5,low,estimated relative to cyclohexane
+oxirane,C1CO1,heterocycle,27.2,high,Wiberg-style compilation (3-membered O heterocycle)
+aziridine,C1CN1,heterocycle,27.1,high,Wiberg-style compilation (3-membered N heterocycle)
+thiirane,C1CS1,heterocycle,19.9,medium,Wiberg-style compilation (3-membered S heterocycle)
+oxetane,C1CCO1,heterocycle,25.5,medium,4-membered O heterocycle compilation
+azetidine,C1CCN1,heterocycle,25.7,low,4-membered N heterocycle, less standardized value
+thietane,C1CCS1,heterocycle,19.6,low,4-membered S heterocycle, less standardized value
+tetrahydrofuran,C1CCOC1,heterocycle,6.0,medium,5-membered O heterocycle, close to cyclopentane
+pyrrolidine,C1CCNC1,heterocycle,5.8,low,5-membered N heterocycle, less standardized value
+tetrahydrothiophene,C1CCSC1,heterocycle,4.6,low,5-membered S heterocycle, less standardized value
+tetrahydropyran,C1CCOCC1,heterocycle,0.5,medium,6-membered O heterocycle, near strain-free like cyclohexane
+piperidine,C1CCNCC1,heterocycle,0.3,low,6-membered N heterocycle, near strain-free like cyclohexane
+thiane,C1CCSCC1,heterocycle,1.0,low,6-membered S heterocycle, near strain-free like cyclohexane
+norbornane,C1CC2CCC1C2,carbocycle,17.0,low,bicyclic; polycyclic strain values are approximate here
+spiropentane,C1CC12CC2,carbocycle,62.5,low,spiro-fused bicyclopropane; highly strained, approximate
+bicyclobutane,C1C2CC12,carbocycle,66.0,low,fused bicyclopropane system; very highly strained, approximate
+bicyclo[2.2.2]octane,C1CC2CCC1CC2,carbocycle,9.8,medium,"Benson group-additivity strain vs NIST dfH-gas=-23.67 kcal/mol (Wong & Westrum 1971); method cross-checked against norbornane's literature 17.2 kcal/mol and reproduces it within ~1 kcal/mol"
+cubane,C12C3C4C1C5C2C3C45,carbocycle,166.0,medium,widely-cited figure (Eaton synthesis papers onward); benzene bioisostere core e.g. in cubane-based BACE1 inhibitors
+cyclopentadecane,C1CCCCCCCCCCCCCCC1,carbocycle,2.0,low,macrocycle; approaching strain-free chain-like packing
+cycloheptadecane,C1CCCCCCCCCCCCCCCCC1,carbocycle,-3.4,medium,Yale thermochem compilation; macrocycle slightly MORE stable than acyclic reference
+cyclopentyne,C1CCC#C1,carbocycle,48.4,high,G3-level ab initio (Bach 2009 JACS 131 5233); sp-center forced into 5-ring
+cyclohexyne,C1CCCC#C1,carbocycle,40.1,high,G3-level ab initio (Bach 2009 JACS 131 5233)
+cycloheptyne,C1CCCCC#C1,carbocycle,25.4,high,G3-level ab initio (Bach 2009 JACS 131 5233)
+cyclooctyne,C1CCCCCC#C1,carbocycle,19.9,high,G3-level ab initio (Bach 2009 JACS 131 5233); the classic SPAAC/click-chemistry alkyne
+3-3-difluorocyclooctyne,FC1(F)CCCCCC#C1,carbocycle,17.3,medium,DIFO bioorthogonal reagent; B3LYP-level (Bach 2009 JACS 131 5233)
+bicyclopentane,C1C2CC1C2,carbocycle,66.6,medium,bicyclo[1.1.1]pentane (BCP); benzene bioisostere, Nature Commun. 2026 / Wiberg 1966
+morpholine,C1COCCN1,heterocycle,0.6,medium,6-membered O+N heterocycle; chair conformation is essentially strain-free like cyclohexane
+piperazine,C1CNCCN1,heterocycle,0.4,medium,6-membered di-N heterocycle; chair conformation essentially strain-free
+1-4-dioxane,C1COCCO1,heterocycle,0.5,medium,6-membered di-O heterocycle; chair conformation essentially strain-free
+1-3-dioxolane,C1OCOC1,heterocycle,5.8,low,5-membered di-O heterocycle; estimated by analogy to THF
+oxazolidine,C1OCCN1,heterocycle,5.9,low,5-membered O+N heterocycle; estimated by analogy to THF/pyrrolidine
+imidazolidine,C1NCCN1,heterocycle,5.7,low,5-membered di-N heterocycle; estimated by analogy to pyrrolidine
+thiazolidine,C1SCCN1,heterocycle,4.8,low,5-membered S+N heterocycle; estimated by analogy to tetrahydrothiophene
+azepane,C1CCCCCN1,heterocycle,6.3,low,7-membered N heterocycle; estimated by analogy to cycloheptane
+oxepane,C1CCCCCO1,heterocycle,6.1,low,7-membered O heterocycle; estimated by analogy to cycloheptane
+thiepane,C1CCCCCS1,heterocycle,5.5,low,7-membered S heterocycle; estimated by analogy to cycloheptane
+silacyclobutane,[SiH2]1CCC1,heterocycle,25.0,low,4-membered Si heterocycle; group-13-16 4-ring RSE compilation (Inorg. Chem. 2025)
+phosphetane,P1CCC1,heterocycle,25.0,low,4-membered P heterocycle; group-13-16 4-ring RSE compilation (Inorg. Chem. 2025)

@@ -1,0 +1,9 @@
+flask>=3.0
+numpy>=1.24
+scikit-learn>=1.3
+
+# Optional, recommended if you have network access: replaces the built-in
+# offline SMILES parser / ring perception with RDKit's, and unlocks richer
+# features (Gasteiger charges, 3D-embedded ring puckering, MMFF/UFF strain
+# baselines, InChI validation, etc.). Not required to run the platform.
+# rdkit>=2023.9

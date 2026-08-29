@@ -1,0 +1,7 @@
+name,smiles,scaffold_role,drug_examples,note
+2-oxabicyclo[2.2.2]octane,O1CC2CCC1CC2,benzene bioisostere,"Imatinib analog, Vorinostat analog",2023 Nature Commun. scaffold (Levterov et al.); no tabulated experimental strain energy in this tool -- ML estimate only
+quinuclidine (1-azabicyclo[2.2.2]octane),C1CN2CCC1CC2,rigid tertiary-amine cage,"quinine, quinidine, solifenacin, cevimeline",topologically identical to bicyclo[2.2.2]octane with one bridgehead CH replaced by N; ML estimate only
+spiro[3.3]heptane,C1CC2(C1)CCC2,benzene bioisostere (sp3-rich),"sonidegib analog, vorinostat analog, benzocaine analog",Prysiazhniuk et al. Angew. Chem. 2024; no tabulated experimental strain energy in this tool -- ML estimate only
+2-oxaspiro[3.3]heptane,C1CC2(C1)COC2,oxetane/piperidine-type bioisostere,common fragment-library building block,widely used sp3-rich spiro fragment in fragment-based drug discovery; ML estimate only
+2-6-diazaspiro[3.3]heptane,C1NC2(C1)CNC2,piperazine bioisostere,"ciprofloxacin DASE analog, AZD1979 (2-ASE-related)",Graziano et al. Adv. Synth. Catal. 2024; no tabulated experimental strain energy in this tool -- ML estimate only
+nortropane (8-azabicyclo[3.2.1]octane),C1CCC2CCC1N2,rigid bicyclic amine,"atropine, cocaine, tropicamide (tropane alkaloids)",parent skeleton of the tropane alkaloid family; ML estimate only
