@@ -1,7 +1,7 @@
-# Contributing to Strain Bench
+# Contributing to Cyclops
 
 Thanks for taking a look. This project is intentionally small and
-honest about its limits — contributions that keep it that way are
+honest about its limits any contributions that keep it that way are
 especially welcome.
 
 ## Setup
