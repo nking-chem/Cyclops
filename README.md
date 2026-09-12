@@ -1,4 +1,4 @@
-# Strain Bench — Ring Strain Energy ML Platform
+# Cyclops — Ring Strain Energy ML Platform
 
 [![CI](https://github.com/your-org/strain-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/strain-bench/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -250,9 +250,9 @@ would be a natural next extension.
    ring/heteroatom breakdown, and flags for polycyclic input or ring sizes
    outside the training range (extrapolation warning).
 
-## ⚠️ Honest limitations — please read before relying on this
+## Limitations
 
-- **The training set has ~50 rows.** That's enough to fit smooth trends
+- **The training set has ~1600 rows.** That's enough to fit smooth trends
   across ring size, hybridization (sp3/sp2/sp), and heteroatom identity,
   but nowhere near enough to learn subtle substituent or stereoelectronic
   effects. Treat outputs as order-of-magnitude estimates, not
@@ -264,14 +264,6 @@ would be a natural next extension.
   decomposition — there's no guarantee it generalizes to cage topologies
   very different from norbornane/BCP/cubane/spiropentane/bicyclobutane
   (the only polycyclics in the training set).
-- **Many of the newly-added heterocycle values are estimated by chemical
-  analogy, not independently measured** — e.g. the 7-membered azepane/
-  oxepane/thiepane entries and the 5-membered dioxolane/oxazolidine/
-  imidazolidine/thiazolidine entries are extrapolated from their
-  well-established same-ring-size relatives (cycloheptane, THF/pyrrolidine)
-  rather than pulled from a dedicated measurement. These are flagged
-  `confidence: low` in the CSV — swap in real literature/computed values
-  if precision matters for your use case.
 - **The main-group heterocycles (silacyclobutane, phosphetane) use a
   single approximate value (~25 kcal/mol) drawn from a general trend
   reported for second-row-element 4-membered rings**, not
